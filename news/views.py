@@ -1,6 +1,7 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from .models import News, Category
+from .forms import NewsForm
 
 
 def index(request):
@@ -27,3 +28,17 @@ def view_news(request, news_id):
         'news_item': news_item
     })
 
+
+def add_news(request):
+    if request.method == 'POST':
+        form = NewsForm(request.POST)  # Форма связанная с данными
+        if form.is_valid():
+            # print(form.cleaned_data)
+            # news = News.objects.create(**form.cleaned_data) Когда используем несвяз.форму
+            news = form.save()  # Когда используем связанную форму
+            return redirect(news)
+    else:
+        form = NewsForm()              # Форма несвязанная с данными
+    return render(request, 'news/add_news.html', {
+        'form': form
+    })
