@@ -16,6 +16,7 @@ from django.core.exceptions import ValidationError
 
 # Форма связанная с моделью
 
+
 class NewsForm(forms.ModelForm):
     class Meta:
         model = News

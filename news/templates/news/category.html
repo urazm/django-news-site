@@ -17,19 +17,18 @@
     {% for item in news %}
         <div class="card mb-3 ">
             <div class="card-header">
-                Категория: {{ item.category }}
+                Категория: <a href="{{ item.category.get_absolute_url }}">{{ item.category.title }}</a>
             </div>
             <div class="card-body">
                 <!-- Медиа-объект -->
                 <div class="d-flex">
-                    {% if item.photo %}
-                        <div class="flex-shrink-0">
-                            <img class="align-self-end mr-3" src="{{ item.photo.url }}" alt="" width="350"
-                                 class="mr-3">
-                        </div>
-                    {% else %}
-                        <img src="https://picsum.photos/id/1084/350/214?grayscale" alt="">
-                    {% endif %}
+                    <div class="flex-shrink-0">
+                        {% if item.photo %}
+                            <img class="align-self-end mr-3" src="{{ item.photo.url }}" alt="" width="350" class="mr-3">
+                        {% else %}
+                            <img src="https://picsum.photos/id/1084/350/214?grayscale" alt="">
+                        {% endif %}
+                    </div>
                     <!-- Контент медиа-объекта-->
                     <div class="flex-grow-1 ms-3">
                         <h5 class="card-title">{{ item.title }}</h5>
