@@ -1,0 +1,36 @@
+name: Build Django App
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run Migrations
+        run: python manage.py migrate
+
+      - name: Collect Static Files
+        run: python manage.py collectstatic --noinput
+
+      - name: Build Docker Image
+        run: docker build -t my-django-app .
+
+      - name: Push Docker Image
+        run: |
+          echo ${{ secrets.DOCKERHUB_TOKEN }} | docker login --username mirlan123321 --password-stdin
+          docker tag my-django-app <your-dockerhub-username>/my-django-app
+          docker push <your-dockerhub-username>/my-django-app
